@@ -11,17 +11,17 @@ const prisma = new PrismaClient();
 // CORS configuration
 const allowedOrigins = [
   'https://udyam-form-81jfjj7i2-atinsharma24s-projects.vercel.app',
-  'http://localhost:3000' // For local development
-];
-
-if (process.env.NODE_ENV === 'development' && process.env.FRONTEND_URL) {
-  allowedOrigins.push(process.env.FRONTEND_URL);
-} else if (process.env.NODE_ENV === 'production' && process.env.FRONTEND_URL) {
-    allowedOrigins.push(process.env.FRONTEND_URL);
-}
+  process.env.FRONTEND_URL
+].filter(Boolean) as string[];
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin) || (process.env.NODE_ENV === 'development' && origin.startsWith('http://localhost:'))) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
