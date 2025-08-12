@@ -1,0 +1,15 @@
+.step {
+  @apply flex items-center justify-center w-10 h-10 rounded-full border-2 border-gray-300 text-gray-500;
+}
+
+.step.active {
+  @apply border-indigo-600 bg-indigo-600 text-white;
+}
+
+.line {
+  @apply flex-1 h-0.5 bg-gray-300 mx-4;
+}
+
+.line.active {
+  @apply bg-indigo-600;
+}
